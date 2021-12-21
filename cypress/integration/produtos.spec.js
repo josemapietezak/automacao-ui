@@ -1,16 +1,33 @@
 /// <reference types="cypress" />
 
-context ('Funcionalidade Register',()=>{
+describe('Funcionalidade Página de produtos', () => {
 
-    it ('Deve selecionar produto', () =>{
+    beforeEach(() => {
         cy.visit('http://lojaebac.ebaconline.art.br/produtos/')
-        cy.get('#primary-menu > .active > a')
-       
-        cy.get('.page-title').should ('contain' , 'Produtos')
-})
-    it ('Deve exibir uma mensagem de Produto adicionado ao carrinho', () =>{cy.visit('http://lojaebac.ebaconline.art.br/produtos/')
-    cy.get('.post-2559 > .product-block > .block-inner > .image > .product-image > .image-hover')
-    
-})
-  
-})
+
+    })
+
+    it('Deve selecionar produto da lista', () => {
+        cy.get('[class ="product-block grid"]')
+            //.first()
+            //.last()
+            //.eq(3)
+            .contains('Ajax Full-Zip Sweatshirt')
+            .click()
+
+    });
+
+    it.only('Deve adicionar um produto ao carrinho', () => {
+        var quantidade = 1
+        cy.get('[class ="product-block grid"]')
+            .contains('Ajax Full-Zip Sweatshirt').click()
+        cy.get('.button-variable-item-M').click()
+        cy.get('.button-variable-item-Green').click()
+        cy.get('.input-text').clear().type(quantidade)
+        cy.get('.single_add_to_cart_button').click()
+
+        cy.get('.dropdown-toggle > .mini-cart-items').should('contain', quantidade)
+        
+    })
+
+});
